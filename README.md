@@ -9,7 +9,15 @@ export a finished image at **exactly 1440 × 1080**.
 - **Custom logo** — click or drag-and-drop any SVG/PNG/JPG/WebP logo, with a size slider.
 - **Color block picker** — native color picker + hex input, plus an opacity slider.
 - **Background swap** — click or drag-and-drop any image (it covers the full canvas).
-- **Headline** — editable text on the right side of the block.
+- **Headline** — editable text on the right side of the block, with its own
+  color picker + hex input (saved with the profile).
+- **Interface theme** — a Dark/Light toggle in the header. It themes only the
+  app's own interface and is remembered in the browser/app; it never changes
+  the exported image.
+- **Responsive layout** — on narrow screens the preview moves above the
+  controls, panels reflow into a grid (then a single column), and the header
+  and export button wrap. The stage itself stays 1440 × 1080 and just scales
+  to fit, so exports are unaffected.
 - **Profiles** — save all of the above under a name and recall it in one click.
   Profiles can also be exported/imported as a JSON file to move between machines.
   - Desktop app: profiles are stored in `herogen-profiles.json` in the app's

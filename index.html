@@ -10,6 +10,7 @@
   <header>
     <h1>HeroGen</h1>
     <div class="header-actions">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">🌙 Dark</button>
       <label class="format-label">Format
         <select id="export-format">
           <option value="image/webp" selected>WebP</option>
@@ -40,7 +41,7 @@
           <button id="profile-import-btn">Import</button>
           <input type="file" id="profile-import" accept="application/json" hidden />
         </div>
-        <p class="hint">A profile saves logo, color block, background, headline and logo size. In the desktop app profiles are stored in a file on your machine; in a browser they're stored locally in that browser.</p>
+        <p class="hint">A profile saves logo, color block, background, headline, headline text color and logo size. In the desktop app profiles are stored in a file on your machine; in a browser they're stored locally in that browser.</p>
       </section>
 
       <section class="panel">
@@ -80,6 +81,12 @@
         <label>Text
           <textarea id="headline" rows="3">Clearly We Did NOT Think This Through</textarea>
         </label>
+        <label>Text color</label>
+        <div class="row color-row">
+          <input type="color" id="text-color" value="#ffffff" />
+          <input type="text" id="text-color-hex" value="#ffffff" spellcheck="false" />
+        </div>
+        <p class="hint">Saved with the profile, like the color block. The text shadow stays on so light text still reads on light blocks.</p>
       </section>
     </aside>
 

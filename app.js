@@ -16,6 +16,8 @@ const els = {
   blockColor: $('block-color'), blockColorHex: $('block-color-hex'),
   blockOpacity: $('block-opacity'), blockOpacityValue: $('block-opacity-value'),
   headline: $('headline'),
+  textColor: $('text-color'), textColorHex: $('text-color-hex'),
+  themeToggle: $('theme-toggle'),
   profileSelect: $('profile-select'), profileName: $('profile-name'),
   exportBtn: $('export-btn'), exportFormat: $('export-format'),
 };
@@ -26,6 +28,7 @@ const state = {
   blockColor: '#7ba5a1', blockOpacity: 95,
   bgData: null,
   headline: 'Clearly We Did NOT Think This Through',
+  textColor: '#ffffff',
 };
 
 // ---------- helpers ----------
@@ -65,6 +68,10 @@ function applyState() {
   els.herobox.style.backgroundImage = state.bgData ? `url("${state.bgData}")` : '';
   els.headline.value = state.headline;
   els.headlinePreview.textContent = state.headline;
+  // Text color is an inline stage style, so it is captured by the export.
+  els.headlinePreview.style.color = state.textColor;
+  els.textColor.value = state.textColor;
+  els.textColorHex.value = state.textColor;
 }
 
 // ---------- preview scaling (stage itself stays 1440x1080) ----------
@@ -113,6 +120,7 @@ function applyProfile(p) {
     logoData: p.logoData ?? null, logoScale: p.logoScale ?? 100,
     blockColor: p.blockColor ?? '#7ba5a1', blockOpacity: p.blockOpacity ?? 95,
     bgData: p.bgData ?? null, headline: p.headline ?? '',
+    textColor: p.textColor ?? '#ffffff',
   });
   applyState();
 }
@@ -140,6 +148,31 @@ els.blockColorHex.addEventListener('change', () => {
 });
 els.blockOpacity.addEventListener('input', () => { state.blockOpacity = +els.blockOpacity.value; applyState(); });
 els.headline.addEventListener('input', () => { state.headline = els.headline.value; els.headlinePreview.textContent = state.headline; });
+
+els.textColor.addEventListener('input', () => { state.textColor = els.textColor.value; applyState(); });
+els.textColorHex.addEventListener('change', () => {
+  const v = els.textColorHex.value.trim();
+  if (/^#?[0-9a-f]{6}$/i.test(v)) { state.textColor = v.startsWith('#') ? v.toLowerCase() : '#' + v.toLowerCase(); }
+  applyState();
+});
+
+// ---------- interface theme (UI only — never touches the stage or export) ----------
+const THEME_KEY = 'herogen_theme';
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  els.themeToggle.textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+  els.themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  try { localStorage.setItem(THEME_KEY, theme); } catch { /* private mode etc. — theme just won't persist */ }
+}
+function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_KEY); } catch { /* ignore */ }
+  if (saved === 'dark' || saved === 'light') return applyTheme(saved);
+  applyTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+}
+els.themeToggle.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
 
 els.profileSelect.addEventListener('change', () => {
   const name = els.profileSelect.value;
@@ -217,6 +250,7 @@ els.exportBtn.addEventListener('click', async () => {
 });
 
 // ---------- init ----------
+initTheme();
 applyState();
 fitStage();
 loadProfiles();

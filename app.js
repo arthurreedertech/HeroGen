@@ -8,7 +8,7 @@ const LS_KEY = 'herogen_profiles_v1';
 const $ = (id) => document.getElementById(id);
 const els = {
   herobox: $('herobox'), overlaybox: $('overlaybox'), logoImg: $('logo-img'),
-  headlinePreview: $('headline-preview'),
+  headlinePreview: $('headline-preview'), divider: $('divider'),
   viewport: $('stage-viewport'), scaler: $('stage-scaler'),
   logoInput: $('logo-input'), logoDrop: $('logo-drop'),
   logoScale: $('logo-scale'), logoScaleValue: $('logo-scale-value'),
@@ -69,7 +69,9 @@ function applyState() {
   els.headline.value = state.headline;
   els.headlinePreview.textContent = state.headline;
   // Text color is an inline stage style, so it is captured by the export.
+  // The divider bar between logo and headline always matches the text color.
   els.headlinePreview.style.color = state.textColor;
+  els.divider.style.backgroundColor = state.textColor;
   els.textColor.value = state.textColor;
   els.textColorHex.value = state.textColor;
 }
